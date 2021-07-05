@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: movies
-          image: grlgmrs/rotten-potatoes:v1
+          image: grlgmrs/rotten-potatoes
           ports:
             - containerPort: 5000
           env:
@@ -41,4 +41,4 @@ spec:
     - port: 80
       targetPort: 5000
       nodePort: 30000
-  type: NodePort
+  type: LoadBalancer
