@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movies
+spec:
+  selector:
+    matchLabels:
+      app: movies
+  template:
+    metadata:
+      labels:
+        app: movies
+    spec:
+      containers:
+        - name: movies
+          image: grlgmrs/rotten-potatoes:v1
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_DB
+              value: admin
+            - name: MONGO_HOST
+              # Mesmo nome do service de onde queremos acessar
+              value: mongo-service
+            - name: MONGO_PORT
+              value: "27017"
+            - name: MONGO_USERNAME
+              value: mongouser
+            - name: MONGO_PASSWORD
+              value: mongopwd
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: movies-service
+spec:
+  selector:
+    app: movies
+  ports:
+    - port: 80
+      targetPort: 5000
+      nodePort: 30000
+  type: NodePort
